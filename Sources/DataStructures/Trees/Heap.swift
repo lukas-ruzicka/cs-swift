@@ -18,6 +18,13 @@ public struct Heap<Element: Equatable> {
     }
 
     /// O(1) time complexity
+    public func copy() -> Heap<Element> {
+        var copy = Heap(sort: sort)
+        copy.elements = elements
+        return copy
+    }
+
+    /// O(1) time complexity
     public var isEmpty: Bool {
         elements.isEmpty
     }
@@ -69,16 +76,16 @@ public struct Heap<Element: Equatable> {
     }
 
     /// O(log n) time complexity
-    mutating func siftDown(from index: Int) {
+    mutating func siftDown(from index: Int, upTo size: Int? = nil) {
         var parent = index
         while true {
             let left = leftChildIndex(ofParentAt: parent)
             let right = rightChildIndex(ofParentAt: parent)
             var candidate = parent
-            if left < count && sort(elements[left], elements[candidate]) {
+            if left < size ?? count && sort(elements[left], elements[candidate]) {
                 candidate = left
             }
-            if right < count && sort(elements[right], elements[candidate]) {
+            if right < size ?? count && sort(elements[right], elements[candidate]) {
                 candidate = right
             }
             if candidate == parent {
@@ -124,7 +131,7 @@ public struct Heap<Element: Equatable> {
     }
 
     /// O(n) time complexity
-    func index(of element: Element, startingAt i: Int) -> Int? {
+    func index(of element: Element, startingAt i: Int = 0) -> Int? {
         if i >= count {
             return nil
         }
@@ -141,5 +148,22 @@ public struct Heap<Element: Equatable> {
             return j
         }
         return nil
+    }
+}
+
+// MARK: - Sort
+extension Heap {
+
+    /// Ascending for max heap, descending for min heap.
+    ///
+    /// O(n log n) time complexity
+    /// O(n) space complexity
+    func sorted() -> [Element] {
+        var heap = copy()
+        for index in heap.elements.indices.reversed() {
+            heap.elements.swapAt(0, index)
+            heap.siftDown(from: 0, upTo: index)
+        }
+        return heap.elements
     }
 }

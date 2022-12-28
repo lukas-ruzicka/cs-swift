@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "DataStructures",
             targets: ["DataStructures"]),
+        .library(
+            name: "Algorithms",
+            targets: ["Algorithms"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -20,6 +23,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "DataStructures",
+            dependencies: []),
+        .target(
+            name: "Algorithms",
             dependencies: [])
     ]
 )
