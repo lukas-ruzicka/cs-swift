@@ -26,6 +26,6 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Algorithms",
-            dependencies: [])
+            dependencies: [.target(name: "DataStructures")])
     ]
 )
